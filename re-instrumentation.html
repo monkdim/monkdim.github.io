@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>RE &amp; Runtime Instrumentation — Case Study · Colby DiMaggio</title>
-<meta name="description" content="A case study in reverse-engineering and resilient runtime instrumentation of an undocumented Unreal Engine 5 binary." />
+<title>RE &amp; Runtime Instrumentation · Case Study · Colby DiMaggio</title>
+<meta name="description" content="A case study in reverse-engineering and instrumenting an undocumented Unreal Engine 5 binary." />
 <style>
   :root {
     --bg:#FAFAF7; --surface:#FFFFFF; --surface-2:#F2F4EF;
@@ -38,48 +38,48 @@
 <div class="wrap">
   <a class="back" href="index.html">← Back to portfolio</a>
 
-  <h1>Reverse-engineering &amp; runtime instrumentation</h1>
-  <p class="sub">A case study: building resilient tooling on top of an undocumented Unreal Engine 5 binary.</p>
-  <p class="tags">Lua · Python · PowerShell · ~13,300 lines</p>
+  <h1>Reverse-engineering and runtime instrumentation</h1>
+  <p class="sub">A case study in building tooling on top of an undocumented Unreal Engine 5 binary.</p>
+  <p class="tags">Lua · Python · PowerShell · about 13,300 lines</p>
 
-  <p class="lede">A personal reverse-engineering research project: instrument and observe a shipping UE5 game's runtime with no source, no documentation, and no type information — then build software resilient enough to survive in that hostile environment and ship to non-technical users.</p>
+  <p class="lede">This was a personal reverse-engineering project. The goal was to observe and instrument a shipping UE5 game's runtime with no source code, no documentation, and no type information, and then build something stable enough to hand to non-technical users.</p>
 
-  <div class="note">This write-up covers the engineering and methodology. The code itself is a personal research project and is kept private; it's available to discuss on request.</div>
+  <div class="note">This write-up covers the engineering and the approach. The code itself is a personal research project that I keep private, but I'm happy to walk through it on request.</div>
 
   <h2>The constraints</h2>
-  <p>The target is an opaque, shipping game binary. The engine's internals are undocumented, the scripting layer it exposes has no type information, and — the hard part — native memory faults in the engine bypass the scripting language's error handling entirely. A bad call doesn't throw; it takes the whole process down, and leaves nothing in the log to explain why.</p>
+  <p>The target is an opaque, shipping game binary. The engine internals aren't documented, the scripting layer it exposes has no type information, and the hard part is that native memory faults in the engine skip the scripting language's error handling completely. A bad call doesn't throw an error you can catch. It takes the whole process down and leaves nothing in the log to tell you why.</p>
 
-  <h2>Crash-survival engineering</h2>
-  <p>Because native faults skip the scripting runtime's protected-call mechanism, a crash normally leaves no trace — and the host tooling even wipes its own log on restart. So the centerpiece of this project is a <strong>persistent breadcrumb + heartbeat forensics system</strong>: a running trail written to disk that survives across sessions, letting me reconstruct exactly where a native crash happened, after the fact.</p>
-  <p>On top of that diagnostic backbone sits a layer of defensive engineering, each piece traceable to a real crash it was built to prevent:</p>
+  <h2>Catching crashes the runtime hides</h2>
+  <p>Because native faults skip the scripting runtime's protected calls, a crash usually leaves no trace, and the host tooling even wipes its own log on restart. So the core of this project is a logging system that writes a running trail of breadcrumbs to disk and survives across sessions. When the game goes down, I can open that trail and see exactly where it died, after the fact.</p>
+  <p>On top of that diagnostic backbone sits a layer of defensive code. Each piece traces back to a real crash it was built to stop:</p>
   <ul>
-    <li>A protected validity wrapper around even the engine's own validity checks, so a stale handle can't fault the process.</li>
-    <li>A cached resolver for engine state that avoids unsafe calls during the dangerous map-transition teardown window.</li>
-    <li>Comprehensive invalidation of stale object references on every map load — stale references are an instant crash, so they're cleared the moment the world changes.</li>
+    <li>A protected wrapper around even the engine's own validity checks, so a stale handle can't fault the process.</li>
+    <li>A cached resolver for engine state that avoids unsafe calls during the dangerous map-transition window.</li>
+    <li>Clearing every stale object reference on each map load. Stale references are an instant crash, so they get cleared the moment the world changes.</li>
   </ul>
-  <p>The result reads, in the commit history, like software that was shipped, broke in the field, and got hardened: features tried, crashed, diagnosed via the breadcrumb trail, and then defended.</p>
+  <p>The commit history shows the pattern over and over: a feature goes in, it crashes in the field, I trace it with the breadcrumb log, and then I defend against it.</p>
 
-  <h2>Concurrency discipline</h2>
-  <p>External tooling communicates with the in-game scripting layer over a file-based IPC bridge. Touching engine objects off the game thread is undefined behavior, so the IPC loop is strictly separated from the game thread and object reads are cached and marshaled — a rule learned from an actual crash, not from theory.</p>
+  <h2>Keeping the threads honest</h2>
+  <p>External tooling talks to the in-game scripting layer over a file-based bridge. Touching engine objects off the game thread is undefined behavior, so the bridge loop stays separate from the game thread and object reads are cached and marshaled across. I learned that rule from an actual crash, not from a manual.</p>
 
   <h2>One system, four runtimes</h2>
-  <p>The whole thing is a coherent cross-language stack: embedded Lua running inside the game, a file-based IPC bridge, an external Python GUI overlay, and a PowerShell layer for installation, builds, and diagnostics. Each piece is doing the job it's best at, wired together end to end.</p>
+  <p>The whole thing is one cross-language stack: embedded Lua running inside the game, a file-based bridge, an external Python overlay for the GUI, and a PowerShell layer for installation, builds, and diagnostics. Each piece does the job it's best at, and they're wired together into a single system.</p>
 
-  <h2>Distribution that survives the real world</h2>
-  <p>A PowerShell installer auto-detects Steam library locations (Windows registry plus <code>libraryfolders.vdf</code> parsing), installs the scripting layer, verifies each step, and emits a diagnostic support bundle on failure — so a non-technical user can install it without hand-holding, and any failure comes back as something I can actually debug.</p>
+  <h2>Distribution that survives real users</h2>
+  <p>A PowerShell installer finds Steam library locations on its own (it reads the Windows registry and parses <code>libraryfolders.vdf</code>), installs the scripting layer, verifies each step, and writes a diagnostic bundle if anything fails. A non-technical user can install it without help from me, and when something does break, it comes back as something I can actually debug.</p>
 
   <hr />
 
   <div class="demonstrates">
-    <h2>What it demonstrates</h2>
+    <h2>What it shows</h2>
     <ul>
-      <li><strong>Reverse engineering</strong> — working productively in a system with no docs, no types, and no source.</li>
-      <li><strong>Defensive systems programming</strong> — debugging and hardening software under adversarial, crash-prone runtime conditions.</li>
-      <li><strong>Cross-language full-stack reach</strong> — embedded scripting ↔ IPC ↔ GUI ↔ packaging and deployment, all integrated and shipping.</li>
+      <li>Reverse engineering: working productively in a system with no docs, no types, and no source.</li>
+      <li>Defensive systems programming: debugging and hardening software under crash-prone conditions.</li>
+      <li>Cross-language range: embedded scripting, IPC, a GUI, and packaging, all integrated and shipping.</li>
     </ul>
   </div>
 
-  <footer>Personal reverse-engineering research project · described here at the level of engineering and methodology · <a href="index.html">back to portfolio</a></footer>
+  <footer>A personal reverse-engineering research project, described here at the level of engineering and approach. <a href="index.html">Back to portfolio</a>.</footer>
 </div>
 </body>
 </html>
