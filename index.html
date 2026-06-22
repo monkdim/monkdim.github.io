@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Colby DiMaggio — Operations & Quality · Data Analytics · Developer</title>
+<meta name="description" content="Colby DiMaggio — operations and quality professional specializing in AI/ML-driven interaction analytics, and a published Apple developer who builds the tools most analysts only configure." />
+<style>
+  :root {
+    --bg:#FAFAF7; --surface:#FFFFFF; --surface-2:#F2F4EF;
+    --text:#1B2A24; --text-2:#586862; --accent:#2E7D5B; --accent-2:#21684A;
+    --accent-soft:#E7F1EB; --border:#E5E8E1; --radius:14px; --maxw:980px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg:#14181A; --surface:#1B2123; --surface-2:#232B2D;
+      --text:#ECF1EE; --text-2:#A7B4AE; --accent:#5FB489; --accent-2:#7CC6A1;
+      --accent-soft:#1E2A24; --border:#2A3335;
+    }
+  }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; scroll-padding-top:72px; }
+  body {
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.65; -webkit-font-smoothing:antialiased;
+  }
+  a { color:var(--accent-2); text-decoration:none; }
+  a:hover { text-decoration:underline; }
+  .wrap { max-width:var(--maxw); margin:0 auto; padding:0 24px; }
+  h1,h2,h3 { line-height:1.2; font-weight:700; letter-spacing:-0.01em; }
+
+  /* nav */
+  header {
+    position:sticky; top:0; z-index:50; background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter:saturate(140%) blur(8px); border-bottom:1px solid var(--border);
+  }
+  nav { display:flex; align-items:center; justify-content:space-between; height:60px; }
+  .brand { font-weight:700; letter-spacing:-0.02em; font-size:17px; color:var(--text); }
+  .brand span { color:var(--accent); }
+  .navlinks { display:flex; gap:26px; align-items:center; }
+  .navlinks a { color:var(--text-2); font-size:15px; font-weight:500; }
+  .navlinks a:hover { color:var(--accent-2); text-decoration:none; }
+  .nav-cta {
+    background:var(--accent); color:#fff !important; padding:8px 16px; border-radius:999px;
+    font-size:14px; font-weight:600;
+  }
+  .nav-cta:hover { background:var(--accent-2); text-decoration:none; }
+  @media (max-width:640px){ .navlinks a:not(.nav-cta){ display:none; } }
+
+  /* hero */
+  .hero { padding:84px 0 56px; }
+  .eyebrow { color:var(--accent-2); font-weight:600; font-size:14px; letter-spacing:.04em; text-transform:uppercase; margin:0 0 14px; }
+  .hero h1 { font-size:clamp(34px,6vw,56px); margin:0 0 18px; }
+  .hero .lede { font-size:clamp(17px,2.4vw,21px); color:var(--text-2); max-width:680px; margin:0 0 28px; }
+  .meta-line { color:var(--text-2); font-size:15px; margin:0 0 28px; }
+  .meta-line strong { color:var(--text); font-weight:600; }
+  .btns { display:flex; flex-wrap:wrap; gap:12px; }
+  .btn {
+    display:inline-flex; align-items:center; gap:8px; padding:11px 18px; border-radius:999px;
+    font-weight:600; font-size:15px; border:1px solid var(--border); background:var(--surface); color:var(--text);
+  }
+  .btn:hover { border-color:var(--accent); color:var(--accent-2); text-decoration:none; }
+  .btn.primary { background:var(--accent); color:#fff; border-color:var(--accent); }
+  .btn.primary:hover { background:var(--accent-2); color:#fff; }
+
+  section { padding:52px 0; border-top:1px solid var(--border); }
+  .sec-label { color:var(--accent-2); font-weight:600; font-size:13px; letter-spacing:.06em; text-transform:uppercase; margin:0 0 6px; }
+  section > .wrap > h2 { font-size:clamp(24px,3.5vw,32px); margin:0 0 8px; }
+  .sec-intro { color:var(--text-2); max-width:680px; margin:0 0 28px; font-size:17px; }
+
+  /* metrics */
+  .metrics { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:16px; }
+  .metric { background:var(--surface-2); border-radius:var(--radius); padding:20px; }
+  .metric .num { font-size:26px; font-weight:700; color:var(--accent-2); letter-spacing:-0.02em; }
+  .metric .cap { font-size:14px; color:var(--text-2); margin-top:4px; }
+
+  /* skills */
+  .skills { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:18px; }
+  .skillcard { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:20px 22px; }
+  .skillcard h3 { font-size:15px; margin:0 0 12px; color:var(--text); }
+  .chips { display:flex; flex-wrap:wrap; gap:8px; }
+  .chip { background:var(--accent-soft); color:var(--accent-2); border-radius:8px; padding:5px 10px; font-size:13px; font-weight:500; }
+
+  /* projects */
+  .projects { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:18px; }
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:24px; display:flex; flex-direction:column; }
+  .card .top { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+  .card h3 { font-size:18px; margin:0 0 4px; }
+  .badge { font-size:12px; font-weight:600; padding:4px 10px; border-radius:999px; white-space:nowrap; }
+  .badge.live { background:var(--accent-soft); color:var(--accent-2); }
+  .badge.wip { background:var(--surface-2); color:var(--text-2); }
+  .card .tech { color:var(--text-2); font-size:13px; font-weight:500; margin:0 0 12px; }
+  .card p { margin:0 0 16px; font-size:15px; color:var(--text); }
+  .card .links { margin-top:auto; display:flex; gap:16px; font-size:14px; font-weight:600; }
+  .card .links .muted { color:var(--text-2); font-weight:500; }
+
+  /* experience */
+  .xp { display:flex; flex-direction:column; gap:4px; }
+  .job { padding:18px 0; border-bottom:1px solid var(--border); }
+  .job:last-child { border-bottom:0; }
+  .job .row { display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+  .job .title { font-weight:600; font-size:16px; }
+  .job .org { color:var(--accent-2); font-weight:500; }
+  .job .when { color:var(--text-2); font-size:14px; white-space:nowrap; }
+  .job p { margin:6px 0 0; color:var(--text-2); font-size:15px; }
+  .earlier { color:var(--text-2); font-size:15px; margin-top:18px; }
+
+  .twocol { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:18px; }
+  .listcard { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:20px 24px; }
+  .listcard h3 { font-size:15px; margin:0 0 10px; }
+  .listcard ul { margin:0; padding-left:18px; color:var(--text-2); font-size:15px; }
+  .listcard li { margin:6px 0; }
+
+  /* contact */
+  .contact .wrap { text-align:center; }
+  .contact h2 { margin-bottom:10px; }
+  .contact .btns { justify-content:center; margin-top:24px; }
+  footer { padding:32px 0 48px; text-align:center; color:var(--text-2); font-size:13px; }
+  .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0 0 0 0); border:0; }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap" aria-label="Primary">
+    <a class="brand" href="#top">Colby <span>DiMaggio</span></a>
+    <div class="navlinks">
+      <a href="#about">About</a>
+      <a href="#work">Work</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+      <a class="nav-cta" href="mailto:dimaggio.colby@outlook.com">Get in touch</a>
+    </div>
+  </nav>
+</header>
+
+<main id="top">
+
+  <section class="hero" style="border-top:0;">
+    <div class="wrap">
+      <p class="eyebrow">Operations &amp; Quality · Data &amp; Interaction Analytics · Published Apple Developer</p>
+      <h1>I turn conversation data into decisions — and build the tools to do it.</h1>
+      <p class="lede">Operations and quality professional specializing in AI/ML-driven interaction analytics. I build quality-management programs from the ground up and turn conversation and performance data into training, scripting, and executive strategy. My edge: I'm also a published Apple developer who personally designs and builds the AI, analytics, and automation tools most analysts only configure.</p>
+      <p class="meta-line"><strong>Kirkland, WA</strong> · open to remote · subject-matter expert in NICE CXone &amp; Interaction Analytics</p>
+      <div class="btns">
+        <a class="btn primary" href="mailto:dimaggio.colby@outlook.com">Email me</a>
+        <a class="btn" href="https://github.com/monkdim" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn" href="https://www.linkedin.com/in/colby-dimaggio-318805125/" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn" href="Colby_DiMaggio_Resume.pdf">Résumé (PDF)</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap">
+      <p class="sec-label">About</p>
+      <h2>What I do</h2>
+      <p class="sec-intro">For the last several years I've worked at the intersection of operations, quality, and data — most recently owning quality operations across a Patient Acquisition Center, reporting to a VP and presenting to C-suite leadership. I ask the right questions, then build the systems to answer them.</p>
+      <div class="metrics">
+        <div class="metric"><div class="num">6K → 20K+</div><div class="cap">annual evaluations, after I built two QM programs from scratch</div></div>
+        <div class="metric"><div class="num">110+</div><div class="cap">teammates coached every month</div></div>
+        <div class="metric"><div class="num">C-suite</div><div class="cap">findings &amp; strategy presented to executive leadership</div></div>
+        <div class="metric"><div class="num">1 paid app</div><div class="cap">designed, built &amp; shipped to the App Store, solo</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="wrap">
+      <p class="sec-label">Skills</p>
+      <h2>What I work with</h2>
+      <div class="skills">
+        <div class="skillcard">
+          <h3>Analytics &amp; Data</h3>
+          <div class="chips">
+            <span class="chip">Interaction Analytics</span><span class="chip">Machine-learning models</span>
+            <span class="chip">Sentiment &amp; trend analysis</span><span class="chip">Business intelligence</span>
+            <span class="chip">Data visualization</span><span class="chip">Root-cause analysis</span>
+          </div>
+        </div>
+        <div class="skillcard">
+          <h3>Quality &amp; Operations</h3>
+          <div class="chips">
+            <span class="chip">QA program design</span><span class="chip">Scorecards</span>
+            <span class="chip">SOPs</span><span class="chip">Operational audits</span>
+            <span class="chip">Process improvement</span><span class="chip">Coaching &amp; training</span>
+          </div>
+        </div>
+        <div class="skillcard">
+          <h3>Platforms &amp; Tools</h3>
+          <div class="chips">
+            <span class="chip">NICE CXone</span><span class="chip">NICE Interaction Analytics</span>
+            <span class="chip">Zenoti</span><span class="chip">Excel (certified)</span>
+            <span class="chip">SharePoint</span><span class="chip">QuickBooks</span>
+          </div>
+        </div>
+        <div class="skillcard">
+          <h3>Software &amp; AI Engineering</h3>
+          <div class="chips">
+            <span class="chip">Swift / SwiftUI</span><span class="chip">Python</span>
+            <span class="chip">TypeScript / Node</span><span class="chip">Rust</span>
+            <span class="chip">Local LLM inference</span><span class="chip">Agentic tool-calling</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="wrap">
+      <p class="sec-label">Projects</p>
+      <h2>Things I've built</h2>
+      <p class="sec-intro">I don't just operate AI and analytics tools — I build them. A selection of what I've shipped on my own time.</p>
+      <div class="projects">
+
+        <div class="card">
+          <div class="top"><h3>ShouldI: Drunk Mode</h3><span class="badge live">Live on App Store</span></div>
+          <p class="tech">Swift · SwiftUI · Screen Time APIs</p>
+          <p>A paid, privacy-first iOS app I designed, built, and shipped end to end — across iPhone, iPad, Mac, and Apple Watch. It sets guardrails before a night out (spending, social, contacts) using on-device challenges, with zero data collection and no servers.</p>
+          <div class="links"><a href="https://apps.apple.com/us/app/shouldi-drunk-mode/id6762097129" target="_blank" rel="noopener">View on the App Store →</a></div>
+        </div>
+
+        <div class="card">
+          <div class="top"><h3>Hearth</h3><span class="badge live">Open source</span></div>
+          <p class="tech">Swift · AppKit · Apple MLX</p>
+          <p>A notarized macOS menu-bar app that runs LLMs fully on-device — chat, image generation, voice, and tool-calling — with a from-scratch OpenAI-compatible HTTP/SSE server and real-time tool-call parsing for unreliable local models. No accounts, no telemetry.</p>
+          <div class="links"><a href="https://github.com/monkdim/Hearth" target="_blank" rel="noopener">View on GitHub →</a></div>
+        </div>
+
+        <div class="card">
+          <div class="top"><h3>Clarity &amp; ClarityOS</h3><span class="badge live">Open source</span></div>
+          <p class="tech">Clarity · Python · Zig</p>
+          <p>A from-scratch, self-hosted programming language: the full toolchain — lexer, parser, interpreter, and optimizing bytecode VM — is written in Clarity itself, shipping as a single binary. ClarityOS, an experimental desktop OS written in it on a small Zig micro-kernel, is an ambitious work in progress.</p>
+          <div class="links"><a href="https://github.com/monkdim/Clarity" target="_blank" rel="noopener">View on GitHub →</a></div>
+        </div>
+
+        <div class="card">
+          <div class="top"><h3>PacketMonkey</h3><span class="badge wip">Code on request</span></div>
+          <p class="tech">Electron · Node · SQLite · SwiftUI</p>
+          <p>A cross-platform protocol-analysis tool: hex annotation, endian-aware field decoding, capture diffing, and AI-assisted analysis — a desktop app and a native iOS companion served from one shared backend.</p>
+          <div class="links"><span class="muted">Available on request</span></div>
+        </div>
+
+        <div class="card">
+          <div class="top"><h3>RE &amp; Instrumentation Toolkit</h3><span class="badge live">Case study</span></div>
+          <p class="tech">Lua · Python · PowerShell</p>
+          <p>A ~13K-line reverse-engineering and runtime-instrumentation suite for an undocumented Unreal Engine 5 binary — including a persistent crash-forensics system to diagnose native faults invisible to the scripting runtime, a file-based IPC bridge to an external GUI, and an automated installer for non-technical users.</p>
+          <div class="links"><a href="re-instrumentation.html">Read the methodology →</a></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="wrap">
+      <p class="sec-label">Experience</p>
+      <h2>Where I've worked</h2>
+      <div class="xp">
+        <div class="job">
+          <div class="row"><span><span class="title">PAC Operations Specialist</span> — <span class="org">Sono Bello</span></span><span class="when">Jul 2025 – Present</span></div>
+          <p>Own quality operations across the Patient Acquisition Center; subject-matter expert on NICE CXone &amp; Interaction Analytics; run ML-driven analysis to surface trends and gaps, and translate them into scripting, training, and process improvements. Report to the VP of Project Management; present strategy to C-suite.</p>
+        </div>
+        <div class="job">
+          <div class="row"><span><span class="title">Quality Assurance Ambassador</span> — <span class="org">Sono Bello</span></span><span class="when">Oct 2021 – Jul 2025</span></div>
+          <p>Built two quality-management programs from the ground up (≈6,000 → 20,000+ annual evaluations); operationalized NICE Interaction Analytics; designed scorecards; coached 110+ employees monthly and presented insights to C-level executives.</p>
+        </div>
+        <div class="job">
+          <div class="row"><span><span class="title">Patient Ambassador / Consult Specialist</span> — <span class="org">Sono Bello</span></span><span class="when">Apr 2021 – Sep 2021</span></div>
+          <p>Managed surgical and consult calendars for three large surgical centers, tracking show-rate, cancellation, and sold-rate KPIs.</p>
+        </div>
+      </div>
+      <p class="earlier">Earlier: management &amp; operations roles — Store Manager (GoEbits), Assistant Manager (Cash America), Account Coordinator (Reedhein &amp; Associates), and Lead Customer Service Specialist (Nordstrom Direct), 2014–2021.</p>
+    </div>
+  </section>
+
+  <section id="credentials">
+    <div class="wrap">
+      <p class="sec-label">Credentials</p>
+      <h2>Certifications &amp; recognition</h2>
+      <div class="twocol">
+        <div class="listcard">
+          <h3>Certifications</h3>
+          <ul>
+            <li>Apple Developer Program</li>
+            <li>NICE CXone Interaction Analytics (NCAP) — 2024</li>
+            <li>Microsoft Office Specialist — Excel, PowerPoint, Word</li>
+            <li>QuickBooks</li>
+          </ul>
+        </div>
+        <div class="listcard">
+          <h3>Awards</h3>
+          <ul>
+            <li>Growth Mindset Trailblazer Award — Sono Bello (2026)</li>
+            <li>PAC Impact Award Nominee — Sono Bello (2025)</li>
+          </ul>
+        </div>
+        <div class="listcard">
+          <h3>Education</h3>
+          <ul>
+            <li>Academy of Art University — Multi-Media Communications (two years of study)</li>
+            <li>Self-taught software engineer</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <div class="wrap">
+      <p class="sec-label">Contact</p>
+      <h2>Let's talk</h2>
+      <p class="sec-intro" style="margin-left:auto;margin-right:auto;">Open to operations, quality, data &amp; analytics, and AI-evaluation work — full-time or contract, remote-friendly.</p>
+      <div class="btns">
+        <a class="btn primary" href="mailto:dimaggio.colby@outlook.com">dimaggio.colby@outlook.com</a>
+        <a class="btn" href="https://github.com/monkdim" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn" href="https://www.linkedin.com/in/colby-dimaggio-318805125/" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn" href="https://apps.apple.com/us/app/shouldi-drunk-mode/id6762097129" target="_blank" rel="noopener">App Store</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">© 2026 Colby DiMaggio · Kirkland, WA · Built from scratch, like everything here.</div>
+</footer>
+
+</body>
+</html>
